@@ -22,13 +22,3 @@ def build_prompt(template, ex):
         Context:
         {context}
         """
-    # Check 
-    elif template == "reasoning":
-        return f"""
-        Identify the relevant information from the context, then answer.
-
-        Question: {ex['question']}
-
-        Context:
-        {context}
-        """
