@@ -1,57 +1,47 @@
 import gradio as gr
-from data import DATASET
-from pipeline import run_example, evaluate
-import json
+import requests
 
-def run(idx):
-    ex = DATASET[int(idx)]
+# Send API requests
+API_URL = "http://localhost:8000"
 
-    # Run both prompts
-    output_a, scores_a = run_example("baseline", ex)
-    output_b, scores_b = run_example("grounded", ex)
-
-    context = f"""
-RELEVANT:
-{ex['relevant']}
-
-DISTRACTOR:
-{ex['distractor']}
-"""
+def fetch_example(idx):
+    response = requests.get(f"{API_URL}/example/{int(idx)}")
+    data = response.json()
 
     return (
-        ex["question"],
-        context.strip(),
-
-        output_a,
-        scores_a,
-
-        output_b,
-        scores_b,
+        data["question"],
+        data["context"],
+        data["baseline"]["output"],
+        data["baseline"]["scores"],
+        data["grounded"]["output"],
+        data["grounded"]["scores"],
     )
 
 def build_prompt_board():
-    prompts = ["baseline", "grounded"]
+    response = requests.get(f"{API_URL}/leaderboard")
+    data = response.json()
 
     rows = []
-
-    for p in prompts:
-        res = evaluate(DATASET, p)
+    for row in data:
         rows.append([
-            p,
-            res["quality"],
-            res["grounding"],
-            res["distractor"],
-            res["correctness"]
+            row["prompt"],
+            row["quality"],
+            row["grounding"],
+            row["distractor"],
+            row["correctness"],
         ])
     return rows
 
+# Build UI
 with gr.Blocks() as app:
-    gr.Markdown("# 📊 Response Quality by templates (Observability)")
+
+    gr.Markdown("# 📊 Response Quality by Templates (Observability)")
 
     board = gr.Dataframe(
         headers=["Prompt", "Quality", "Grounding", "Distractor", "Correctness"],
         value=build_prompt_board()
     )
+
     refresh_board = gr.Button("Recompute Metrics")
 
     refresh_board.click(
@@ -64,7 +54,7 @@ with gr.Blocks() as app:
 
     idx = gr.Slider(
         minimum=0,
-        maximum=len(DATASET) - 1,
+        maximum=10,
         step=1,
         value=0,
         label="Select Example"
@@ -84,9 +74,9 @@ with gr.Blocks() as app:
             output_b = gr.Textbox(label="Model Output", lines=5)
             scores_b = gr.JSON(label="Metrics")
 
-    # Auto-load initial example
+    # Load initial example
     app.load(
-        fn=run,
+        fn=fetch_example,
         inputs=idx,
         outputs=[
             question,
@@ -98,9 +88,9 @@ with gr.Blocks() as app:
         ],
     )
 
-    # Update when slider changes
+    # Update on slider change
     idx.change(
-        fn=run,
+        fn=fetch_example,
         inputs=idx,
         outputs=[
             question,
@@ -112,5 +102,6 @@ with gr.Blocks() as app:
         ],
     )
 
-
-app.launch()
+# Run App
+if __name__ == "__main__":
+    app.launch()
