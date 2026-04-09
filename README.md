@@ -21,13 +21,21 @@ Compare prompt designs to understand:
 
 ```
 llm_evaluation_gradio/
-├── data.py          # dataset (question, context, answer)
-├── prompts.py       # prompt templates
-├── model.py         # OpenAI API call
-├── metrics.py       # evaluation functions
-├── pipeline.py      # run + aggregation logic
-├── run_eval.py      # batch evaluation
-└── app.py           # UI (comparison + dashboard)
+      ├──api
+          ├──routes.py # API router set
+      ├──db
+          ├──data.py # Data in List of dictionaries
+          ├──repository.py # Load dataset
+      ├──evaluation
+          ├──metrics.py # Metrics defined for llm evaluation
+          ├──prompts.py # Different versions of templates
+      ├──llm
+          ├──model.py # llm client
+      ├──services
+          ├──pipeline.py # Evaluate scores for single example or whole dataset
+├──app.py               # Create dashboard
+├──requirements.txt
+
 ```
 
 ## 🚀 Setup
