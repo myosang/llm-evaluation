@@ -21,20 +21,20 @@ Compare prompt designs to understand:
 
 ```
 llm_evaluation_gradio/
-      ├──api
-          ├──routes.py # API router set
-      ├──db
-          ├──data.py # Data in List of dictionaries
-          ├──repository.py # Load dataset
-      ├──evaluation
-          ├──metrics.py # Metrics defined for llm evaluation
-          ├──prompts.py # Different versions of templates
-      ├──llm
-          ├──model.py # llm client
-      ├──services
-          ├──pipeline.py # Evaluate scores for single example or whole dataset
-├──app.py               # Create dashboard
-├──requirements.txt
+├── api/
+│   └── routes.py # API router set
+├── db/
+│   ├── data.py # Data in List of dictionaries
+│   └── repository.py # Load dataset
+├── evaluation/
+│   ├── metrics.py # Metrics defined for llm evaluation
+│   └── prompts.py # Different versions of templates
+├── llm/
+│   └── model.py # llm client
+├── services/
+│   └── pipeline.py # Evaluate scores for single example or whole dataset
+├── app.py # Create dashboard
+└── requirements.txt
 
 ```
 
