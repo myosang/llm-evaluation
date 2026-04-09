@@ -1,4 +1,4 @@
-from llm_evaluation_gradio.db.data import DATASET
+from ..db.data import DATASET
 
 def load_dataset():
     return DATASET

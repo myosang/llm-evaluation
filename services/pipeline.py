@@ -1,6 +1,6 @@
-from llm_evaluation_gradio.llm.model import OllamaClient
-from llm_evaluation_gradio.evaluation.prompts import build_prompt
-from llm_evaluation_gradio.evaluation.metrics import correctness, grounding, distractor_usage, quality_score
+from ..llm.model import OllamaClient
+from ..evaluation.prompts import build_prompt
+from ..evaluation.metrics import correctness, grounding, distractor_usage, quality_score
 import numpy as np
 
 

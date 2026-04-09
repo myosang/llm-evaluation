@@ -1,11 +1,11 @@
 from fastapi import APIRouter
-from llm_evaluation_gradio.services.pipeline import evaluate_single, evaluate_dataset
-from llm_evaluation_gradio.db.repository import load_dataset
-from llm_evaluation_gradio.llm.model import OllamaClient
+from ..services.pipeline import evaluate_single, evaluate_dataset
+from ..db.repository import load_dataset
+from ..llm.model import OllamaClient
 
 router = APIRouter()
 
-@router.get("/evaluate/{idx}")
+@router.get("/example/{idx}")
 def get_example(idx: int):
     dataset = load_dataset()
     ex = dataset[idx]

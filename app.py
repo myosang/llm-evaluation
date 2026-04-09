@@ -5,7 +5,8 @@ import requests
 API_URL = "http://localhost:8000"
 
 def fetch_example(idx):
-    response = requests.get(f"{API_URL}/example/{int(idx)}")
+    response = requests.get(f"{API_URL}/example/{idx}")
+    print(response.text)
     data = response.json()
 
     return (
